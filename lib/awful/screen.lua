@@ -19,6 +19,8 @@ local gdebug = require("gears.debug")
 local gmath = require("gears.math")
 local object = require("gears.object")
 local grect =  require("gears.geometry").rectangle
+local gsurf = require("gears.surface")
+local cairo = require("lgi").cairo
 
 local function get_screen(s)
     return s and capi.screen[s]
@@ -32,7 +34,7 @@ local screen = {object={}}
 local data = {}
 data.padding = {}
 
---- Take an input geometry and substract/add a delta.
+--- Take an input geometry and subtract/add a delta.
 -- @tparam table geo A geometry (width, height, x, y) table.
 -- @tparam table delta A delta table (top, bottom, x, y).
 -- @treturn table A geometry (width, height, x, y) table.
@@ -199,6 +201,25 @@ function screen.object.get_tiling_area(s)
         honor_padding  = true,
         honor_workarea = true,
     }
+end
+
+--- Take a screenshot of the physical screen.
+--
+-- Reading this (read only) property returns a screenshot of the physical
+-- (Xinerama) screen as a cairo surface.
+--
+-- @property content
+-- @tparam gears.surface content
+
+function screen.object.get_content(s)
+    local geo = s.geometry
+    local source = gsurf(root.content())
+    local target = source:create_similar(cairo.Content.COLOR, geo.width, geo.height)
+    local cr = cairo.Context(target)
+    cr:set_source_surface(source, -geo.x, -geo.y)
+    cr:rectangle(0, 0, geo.width, geo.height)
+    cr:fill()
+    return target
 end
 
 --- Get or set the screen padding.
@@ -862,7 +883,7 @@ end
 --
 -- Important: This only exists when Awesome is started with `--screen off`.
 --
--- Note that given the viewports are not the same, the `id` wont be the same.
+-- Note that given the viewports are not the same, the `id` won't be the same.
 -- Also note that if multiple new viewports fit within a single "old" viewport,
 -- the resized screen will be the one with the largest total overlapping
 -- viewport (`intersection.width*intersection.height`), regardless of the
@@ -970,7 +991,7 @@ require("awful.screen.dpi")(screen, data)
 -- Set the wallpaper(s) and create the bar(s) for new screens
 
 capi.screen.connect_signal("_added", function(s)
-    -- If it was emited from here when screens are created with fake_add,
+    -- If it was emitted from here when screens are created with fake_add,
     -- the Lua code would not have an opportunity to polutate the screen
     -- metadata. Thus, the DPI may be wrong when setting the wallpaper.
     if s._managed ~= "Lua" then

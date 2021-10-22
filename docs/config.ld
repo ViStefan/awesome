@@ -31,22 +31,22 @@ should be useful for you.
 
 ### Default configuration components name:
 
-<center><img src="../doc/images/AUTOGEN_awful_popup_defaultconfig.svg"></center>
+<center><img src="images/AUTOGEN_awful_popup_defaultconfig.svg"></center>
 
 ### Guides
 
 <div class="index_guides">
     <div>
-        <a href="../doc/documentation/07-my-first-awesome.md.html">Getting started</a>
-        <a href="../doc/documentation/90-FAQ.md.html">FAQ</a>
-        <a href="../doc/documentation/01-readme.md.html">Read me</a>
-        <a href="../doc/documentation/89-NEWS.md.html">NEWS</a>
+        @{07-my-first-awesome.md|Getting started}
+        @{90-FAQ.md|FAQ}
+        @{01-readme.md|Read Me}
+        @{89-NEWS.md|NEWS}
     </div>
     <div>
-        <a href="../doc/documentation/03-declarative-layout.md.html">The widget system</a>
-        <a href="../doc/documentation/09-options.md.html">Startup options</a>
-        <a href="../doc/documentation/05-awesomerc.md.html">The default rc.lua</a>
-        <a href="../doc/documentation/08-client-layout-system.md.html">Window management</a>
+        @{03-declarative-layout.md|The widget system}
+        @{09-options.md|Startup options}
+        @{05-awesomerc.md|The default rc.lua}
+        @{08-client-layout-system.md|Window management}
     </div>
 </div>
 
@@ -517,6 +517,7 @@ file = {
         -- exclude these modules, as they do not contain any written
         -- documentation
         '../lib/awful/autofocus.lua',
+        '../lib/awful/client/shape.lua',
         '../lib/awful/dbus.lua',
         '../lib/awful/_compat.lua',
         '../lib/awful/init.lua',
@@ -525,6 +526,7 @@ file = {
         '../lib/awful/startup_notification.lua',
         '../lib/awful/mouse/drag_to_tag.lua',
         '../lib/awful/permissions/_common.lua',
+        '../lib/awful/client/urgent.lua',
         '../lib/gears/init.lua',
         '../lib/wibox/layout/init.lua',
         '../lib/wibox/container/init.lua',
@@ -907,6 +909,7 @@ local show_return = {
     ["function"]    = true,
     constructorfct  = true,
     constructorfct2 = true,
+    legacylayout    = true,
     staticfct       = true,
     method          = true,
     deprecated      = true,
